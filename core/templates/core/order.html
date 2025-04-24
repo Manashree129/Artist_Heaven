@@ -1,0 +1,321 @@
+{% extends "core/base.html" %}
+{% block content %}
+<style>
+    .orders-wrapper {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+    
+    .purchase-container {
+        padding: 1rem;
+    }
+    
+    .receipt-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease;
+    }
+    
+    .receipt-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .receipt-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .receipt-title {
+        color: #1e293b;
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+    
+    .receipt-accent {
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, #E91E63, #9C27B0);
+        margin: 0 auto;
+        border-radius: 3px;
+    }
+    
+    .receipt-info {
+        margin-bottom: 2rem;
+    }
+    
+    .order-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .info-heading {
+        color: #64748b;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .info-details {
+        color: #1e293b;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    .pricing-section {
+        background: #f8fafc;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+    }
+    
+    .pricing-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .item-name {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+    
+    .item-price {
+        color: #1e293b;
+        font-weight: 600;
+    }
+    
+    .pricing-divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 1rem 0;
+    }
+    
+    .total-amount {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+    }
+    
+    .total-label {
+        color: #1e293b;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .total-value {
+        color: #E91E63;
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+    
+    .order-tracking {
+        margin-bottom: 2rem;
+    }
+    
+    .tracking-title {
+        color: #1e293b;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .progress-container {
+        padding: 0 1rem;
+    }
+    
+    .progress-steps {
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        position: relative;
+    }
+    
+    .progress-steps::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #e2e8f0;
+        z-index: 1;
+    }
+    
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+        z-index: 2;
+        color: #64748b;
+    }
+    
+    .progress-step i {
+        width: 35px;
+        height: 35px;
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    
+    .progress-step span {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .progress-step.active {
+        color: #E91E63;
+    }
+    
+    .progress-step.active i {
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        color: white;
+        border-color: transparent;
+    }
+    
+    .receipt-footer {
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .footer-icon {
+        color: #E91E63;
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .receipt-footer p {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+    
+    .support-link {
+        color: #E91E63;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    
+    .support-link:hover {
+        color: #9C27B0;
+    }
+    
+    @media (max-width: 768px) {
+        .orders-wrapper {
+            grid-template-columns: 1fr;
+        }
+        
+        .receipt-card {
+            padding: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .orders-wrapper {
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+        
+        .order-info {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .progress-step span {
+            font-size: 0.8rem;
+        }
+    }
+    </style>
+    <br><br>
+<div class="orders-wrapper">
+    {% for o in ord %}
+    <div class="purchase-container">
+        <div class="receipt-card">
+            <div class="receipt-header">
+                <h2 class="receipt-title">Purchase Receipt</h2>
+                <div class="receipt-accent"></div>
+            </div>
+
+            <div class="receipt-info">
+                <div class="order-info">
+                    <div class="info-item">
+                        <span class="info-heading">Date</span>
+                        <span class="info-details">10 October 2018</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-heading">Order No.</span>
+                        <span class="info-details">012j1gvs356c</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-section">
+                <div class="pricing-item">
+                    <span class="item-name">{{ o.tool.name }}</span>
+                    <span class="item-price">₹{{ o.tool.discounted_price }}</span>
+                </div>
+                <div class="pricing-item">
+                    <span class="item-name">Shipping</span>
+                    <span class="item-price">₹2000</span>
+                </div>
+                <div class="pricing-divider"></div>
+                <div class="total-amount">
+                    <span class="total-label">Total Amount</span>
+                    <span class="total-value">₹{{ o.tool.discounted_price|add:2000 }}</span>
+                </div>
+            </div>
+
+            <div class="order-tracking">
+                <h3 class="tracking-title">Order Status</h3>
+                <div class="progress-container">
+                    <ul class="progress-steps">
+                        <li class="progress-step {% if o.status in 'PENDING,PROCESSING,COMPLETED' %} active {% endif %}">
+                            <i class="fas fa-clock"></i>
+                            <span>Pending</span>
+                        </li>
+                        <li class="progress-step {% if o.status in 'PROCESSING,COMPLETED' %} active {% endif %}">
+                            <i class="fas fa-box"></i>
+                            <span>Processing</span>
+                        </li>
+                        <li class="progress-step {% if o.status == 'COMPLETED' %} active {% endif %}">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Completed</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="receipt-footer">
+                <i class="fas fa-headset footer-icon"></i>
+                <p>Need assistance? <a href="#" class="support-link">Contact Support</a></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

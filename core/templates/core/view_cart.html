@@ -1,0 +1,361 @@
+
+{% extends "core/base.html" %}
+
+
+{% block content %}
+<style>
+    .user-profile {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+    
+    /* Sidebar Styling */
+    .user-sidebar {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        height: fit-content;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .nav-menu li a {
+        display: block;
+        padding: 0.875rem 1.25rem;
+        color: #64748b;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .nav-menu li:nth-child(4) a {
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        color: white;
+        box-shadow: 0 8px 20px rgba(233, 30, 99, 0.2);
+    }
+    
+    .nav-menu li a:hover:not(:nth-child(4) a) {
+        background: rgba(233, 30, 99, 0.08);
+        color: #E91E63;
+        transform: translateX(5px);
+    }
+    
+    /* Main Content Layout */
+    .user-content {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 2rem;
+    }
+    
+    /* Cart Section */
+    .cart-section {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .cart-section h3 {
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+    
+    .cart-entry {
+        display: grid;
+        grid-template-columns: 100px 1fr 50px;
+        gap: 1.5rem;
+        padding: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .cart-entry:hover {
+        border-color: #E91E63;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .cart-entry img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .product-info p {
+        color: #1e293b;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    
+    .price-quantity-group {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .price h5 {
+        color: #E91E63;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+    
+    .quantity-handler {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #f8fafc;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+    }
+    
+    .quantity-handler a {
+        color: #E91E63;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    .trash a {
+        color: #ef4444;
+        transition: all 0.3s ease;
+    }
+    
+    .trash a:hover {
+        color: #dc2626;
+    }
+    
+    /* Summary Section */
+    .summary-container {
+        width: 100%;
+    }
+    
+    .summary-card {
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1rem;
+    }
+    
+    .summary-header h3 {
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+    
+    .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .summary-table th, 
+    .summary-table td {
+        padding: 0.75rem;
+        color: #1e293b;
+    }
+    
+    .summary-table th {
+        font-weight: 600;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .align-center {
+        text-align: center;
+    }
+    
+    .align-right {
+        text-align: right;
+    }
+    
+    .barcode-icon {
+        color: #64748b;
+        font-size: 1.5rem;
+    }
+    
+    .checkout-btn {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .checkout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(233, 30, 99, 0.25);
+    }
+    
+    @media (max-width: 1200px) {
+        .user-content {
+            grid-template-columns: 1fr 300px;
+        }
+    }
+    
+    @media (max-width: 968px) {
+        .user-profile {
+            grid-template-columns: 1fr;
+        }
+    
+        .user-content {
+            grid-template-columns: 1fr;
+        }
+        
+        .summary-container {
+            order: -1;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .user-profile {
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+        
+        .cart-entry {
+            grid-template-columns: 80px 1fr 40px;
+            gap: 1rem;
+        }
+        
+        .cart-entry img {
+            height: 80px;
+        }
+        
+        .price-quantity-group {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .summary-table {
+            font-size: 0.9rem;
+        }
+    }
+    </style>
+<br><br><br>
+<div class="user-profile">
+    <div class="user-sidebar">
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="{% url 'profile' %}">Dashboard</a></li>
+                <li><a href="{% url 'changepassword' %}">Change Password</a></li>
+                <li><a href="{% url 'order' %}">Orders</a></li>
+                <li><a href="{% url 'viewcart' %}">Cart</a></li>
+                <li><a href="{% url 'address' %}">Address</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="user-content">
+        <!-- Shopping Cart Section -->
+        <div class="cart-section">
+            <h3>Shopping Cart</h3>
+            {% for item in cart_items %}
+                <div class="cart-entry">
+                    <img src="{{ item.product.tools_image.url }}" alt="Product Image">
+                    <div class="product-info">
+                        <p>{{ item.product.name }}</p>
+
+                        <div class="price-quantity-group">
+                            <div class="price">
+                                <h5>₹{{ item.price_and_quantity_total }}</h5>
+                            </div>
+                            <div class="quantity-handler">
+                                <a href="{% url 'delete_quantity' item.id %}">-</a>
+                                <span>{{ item.quantity }}</span>
+                                <a href="{% url 'add_quantity' item.id %}">+</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trash">
+                        <a href="{% url 'deletecart' item.id %}" class="text-danger">
+                            <i class="fas fa-trash fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Order Summary Section (to the right of Cart) -->
+        <div class="summary-container">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h3><strong>Order Summary</strong></h3>
+                </div>
+                <div class="summary-content">
+                    <div class="summary-table-wrapper">
+                        <table class="summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th class="align-center">Price</th>
+                                    <th class="align-center">Quantity</th>
+                                    <th class="align-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td class="align-center">₹{{ item.product.discounted_price }}</td>
+                                    <td class="align-center">{{ item.quantity }}</td>
+                                    <td class="align-right">₹{{ item.price_and_quantity_total }}</td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="align-center"><strong>Subtotal</strong></td>
+                                    <td class="align-right">₹<b>{{ total }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="align-center"><strong>Shipping</strong></td>
+                                    <td class="align-right">₹100</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-barcode barcode-icon"></i></td>
+                                    <td></td>
+                                    <td class="align-center"><strong>Total</strong></td>
+                                    <td class="align-right">₹<b>{{ final_price }}</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Button -->
+            <a href="{% url "checkout" %}">  
+                <button class="checkout-btn">Proceed to Pay</button>
+            </a> 
+        </div> 
+    </div>
+</div>
+<br><br><br>
+{% endblock content %}

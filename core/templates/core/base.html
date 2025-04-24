@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist's Heaven</title>
+    <link rel="stylesheet" href="{% static "core/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "core/css/main.css" %}">
+    <link rel="stylesheet" href="{% static "core/css/category.css" %}">
+
+   {% comment %} paints {% endcomment %}
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+</head>
+<body>
+
+    {% include "core/navbar.html" %}
+
+    {% block css %}{% endblock css %}
+    
+    {% block content %}
+
+       
+    <!-- Hero Section (Carousel) -->
+    <section class="hero">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static "core/images/carousal-1.jpg" %}" class="d-block w-100" alt="Artist working on sketch">
+                    <div class="carousel-overlay">
+                        <h1>Premium Art Supplies</h1>
+                        <p>Discover high-quality tools to bring your creativity to life.</p>
+                        <a href="#products" class="btn">Shop Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static "core/images/carousel2.jpg" %}" class="d-block w-100" alt="Painting with acrylics">
+                    <div class="carousel-overlay">
+                        <h1>Unleash Your Creativity</h1>
+                        <p>From sketchbooks to paints, find the perfect tools.</p>
+                        <a href="#products" class="btn">Shop Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static "core/images/carousel3.jpg" %}" class="d-block w-100" alt="Creative art tools">
+                    <div class="carousel-overlay">
+                        <h1>Inspired by Artists</h1>
+                        <p>Professional-grade supplies tailored for every artist.</p>
+                        <a href="#products" class="btn">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </a>
+        </div>
+    </section>
+
+
+    <!-- Featured Products -->
+    <!-- Featured Products -->
+    <section class="products" id="products">
+        <h2>Explore Art Categories</h2>
+        <div class="product-container">
+            
+            <!-- Paints & Mediums Category -->
+            <div class="category-card">
+                <img src="{% static 'core/images/paints-category.jpg' %}" alt="Paints & Mediums">
+                <div class="overlay">
+                    <h3>Paints & Mediums</h3>
+                    <a href="{% url 'paints' %}" class="btn">Shop Collection</a>
+                </div>
+            </div>
+
+            <!-- Surfaces & Tools Category -->
+            <div class="category-card">
+                <img src="{% static 'core/images/surfaces-category.jpg' %}" alt="Surfaces & Tools">
+                <div class="overlay">
+                    <h3>Surfaces & Tools</h3>
+                    <a href="{% url 'surfaces' %}" class="btn">Shop Collection</a>
+                </div>
+            </div>
+
+            <!-- Drawing & Illustration Category -->
+            <div class="category-card">
+                <img src="{% static 'core/images/drawing-category.jpg' %}" alt="Drawing & Illustration">
+                <div class="overlay">
+                    <h3>Sketch & Shade</h3>
+                    <a href="{% url 'drawing' %}" class="btn">Shop Collection</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- After your existing sections, add these new sections -->
+
+    <!-- Artist Features Section -->
+    <section class="artist-features">
+        <div class="features-container">
+            <h2>Why Choose Artist's Haven</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3>Premium Quality</h3>
+                    <p>Curated selection of professional-grade art supplies from renowned brands worldwide.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-truck"></i>
+                    <h3>Fast Delivery</h3>
+                    <p>Swift and secure shipping to ensure your creative journey never stops.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-medal"></i>
+                    <h3>Expert Selection</h3>
+                    <p>Each product carefully chosen by professional artists for optimal results.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>Artist Community</h3>
+                    <p>Join our growing community of passionate artists and creators.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Artists Section -->
+    <section class="featured-artists">
+        <h2>Featured Artist Works</h2>
+        <div class="artist-gallery">
+            <div class="gallery-item">
+                <img src="{% static 'core/images/artist1.jpg' %}" alt="Artist Work 1">
+                <div class="gallery-overlay">
+                    <h4>Watercolor Dreams</h4>
+                    <p>By Sarah Mitchell</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{% static 'core/images/artist2.jpg' %}" alt="Artist Work 2">
+                <div class="gallery-overlay">
+                    <h4>Abstract Visions</h4>
+                    <p>By Michael Chen</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="{% static 'core/images/artist3.jpg' %}" alt="Artist Work 3">
+                <div class="gallery-overlay">
+                    <h4>Urban Sketches</h4>
+                    <p>By Emma Watson</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <h2>What Artists Say</h2>
+        <div class="testimonial-container">
+            <div class="testimonial-card">
+                <div class="quote">"The quality of art supplies here is unmatched. My artwork has improved significantly!"</div>
+                <div class="author">
+                    <img src="{% static 'core/images/artist-avatar1.jpg' %}" alt="Artist 1">
+                    <div class="author-info">
+                        <h4>Jessica Lee</h4>
+                        <p>Professional Artist</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Amazing selection of professional tools. This is my go-to store for all art supplies."</div>
+                <div class="author">
+                    <img src="{% static 'core/images/artist-avatar2.jpg' %}" alt="Artist 2">
+                    <div class="author-info">
+                        <h4>David Miller</h4>
+                        <p>Art Instructor</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"The customer service is exceptional. They really understand artists' needs."</div>
+                <div class="author">
+                    <img src="{% static 'core/images/artist-avatar3.jpg' %}" alt="Artist 3">
+                    <div class="author-info">
+                        <h4>Anna Thompson</h4>
+                        <p>Watercolor Artist</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    {% endblock content %}
+   
+    {% include "core/footer.html" %}
+    
+    <script src="{% static "core/js/jquery.js" %}"></script>
+    <script src="{% static "core/js/popper.js" %}"></script>
+    <script src="{% static "core/js/bootstrap.min.js" %}"></script>
+</body>
+</html>

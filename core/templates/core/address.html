@@ -1,0 +1,428 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<br><br><br>
+<div class="app-container">
+    <div class="layout-grid">
+        <!-- Left Sidebar -->
+        <div class="side-panel">
+            <div class="panel-header">
+                <div class="profile-circle">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3>My Account</h3>
+            </div>
+            <nav>
+                <ul class="menu-list">
+                    <li class="menu-item ">
+                        <a href="{% url 'profile' %}">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'changepassword' %}">
+                            <i class="fas fa-lock"></i>
+                            <span>Change Password</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'order' %}">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url 'viewcart' %}">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Cart</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="{% url 'address' %}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Address</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Middle Profile Section -->
+        <div class="main-card">
+            <div class="card-header">
+                <h2>My Profile</h2>
+                <p>Manage your personal information</p>
+                <div class="header-line"></div>
+            </div>
+            
+            <form action="" method="POST" novalidate class="main-form">
+                {% csrf_token %}
+                {% for f in mf %}
+                <div class="input-group">
+                    <div class="label-wrapper">
+                        <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+                    </div>
+                    <div class="input-box">
+                        {{ f }}
+                    </div>
+                    {% if f.errors %}
+                    <div class="error-text">
+                        {{ f.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">
+                        <i class="fas fa-save"></i>
+                        <span>Save </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Address Section -->
+        <div class="side-card">
+            <div class="card-header">
+                <h2>My Addresses</h2>
+                <p>Manage your delivery addresses</p>
+                <div class="header-line"></div>
+            </div>
+            
+            <div class="address-list">
+                {% for add in address %}
+                <div class="address-item">
+                    <div class="item-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="item-details">
+                        <h3>{{ add.name }}</h3>
+                        <p>{{ add.address }}</p>
+                        <p>{{ add.city }}, {{ add.state }} - {{ add.pincode }}</p>
+                    </div>
+                    <form action="{% url 'deleteaddress' add.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="secondary-btn">
+                            <i class="fas fa-trash"></i>
+                            <span>Delete</span>
+                        </button>
+                    </form>              
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .app-container {
+        min-height: 100vh;
+        background: linear-gradient(145deg, #f8f4ff 0%, #ece4fb 100%);
+        padding: 2rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .layout-grid {
+        max-width: 1600px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 280px 1fr 350px;
+        gap: 1.75rem;
+    }
+    
+    /* Left Sidebar Styling */
+    .side-panel {
+        background: white;
+        border-radius: 20px;
+        padding: 1.75rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+    }
+    
+    .panel-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .profile-circle {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+    
+    .profile-circle i {
+        font-size: 2rem;
+        color: white;
+    }
+    
+    .panel-header h3 {
+        color: #1e293b;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    
+    .menu-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .menu-item a {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        padding: 0.875rem 1.125rem;
+        color: #64748b;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    .menu-item.active a {
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        color: white;
+        box-shadow: 0 8px 20px rgba(233, 30, 99, 0.2);
+    }
+    
+    .menu-item a:hover:not(.active a) {
+        background: rgba(233, 30, 99, 0.08);
+        color: #E91E63;
+        transform: translateX(5px);
+    }
+    
+    .menu-item i {
+        font-size: 1.25rem;
+    }
+    
+    /* Main Card Styling */
+    .main-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+    
+    .card-header {
+        margin-bottom: 2rem;
+    }
+    
+    .card-header h2 {
+        font-size: 1.75rem;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    
+    .card-header p {
+        color: #64748b;
+        font-size: 1rem;
+    }
+    
+    .header-line {
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, #E91E63, #9C27B0);
+        margin-top: 1rem;
+        border-radius: 3px;
+    }
+    
+    /* Enhanced Form Styling */
+    .input-group {
+        margin-bottom: 1.5rem;
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .label-wrapper {
+        margin-bottom: 0;
+    }
+    
+    .label-wrapper label {
+        color: #1e293b;
+        font-size: 0.95rem;
+        font-weight: 500;
+        display: block;
+        text-align: right;
+        padding-right: 1rem;
+    }
+    
+    .input-box {
+        flex: 1;
+    }
+    
+    .input-box input {
+        width: 100%;
+        padding: 0.875rem 1.125rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+    
+    .input-box input:focus {
+        border-color: #E91E63;
+        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        outline: none;
+    }
+    
+    .error-text {
+        color: #ef4444;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        grid-column: 2;
+    }
+    
+    .form-actions {
+        padding-left: 200px;
+        margin-top: 2rem;
+    }
+    
+    /* Button Styling */
+    .primary-btn, .secondary-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .primary-btn {
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        color: white;
+        border: none;
+    }
+    
+    .primary-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(233, 30, 99, 0.25);
+    }
+    
+    .secondary-btn {
+        background: #fee2e2;
+        color: #ef4444;
+        border: none;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .secondary-btn:hover {
+        background: #fecaca;
+    }
+    
+    /* Address Section Styling */
+    .side-card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.75rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        height: fit-content;
+        position: sticky;
+        top: 2rem;
+    }
+    
+    .address-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .address-item {
+        padding: 1.25rem;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+    
+    .address-item:hover {
+        border-color: #E91E63;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .item-icon {
+        color: #E91E63;
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .item-details h3 {
+        color: #1e293b;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .item-details p {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1400px) {
+        .layout-grid {
+            grid-template-columns: 260px 1fr 320px;
+            gap: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .layout-grid {
+            grid-template-columns: 260px 1fr;
+        }
+        .side-card {
+            grid-column: 1 / -1;
+            position: static;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .layout-grid {
+            grid-template-columns: 1fr;
+        }
+        .side-panel {
+            position: static;
+        }
+        .app-container {
+            padding: 1rem;
+        }
+        .input-group {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+        .label-wrapper label {
+            text-align: left;
+            padding-right: 0;
+        }
+        .form-actions {
+            padding-left: 0;
+        }
+        .error-text {
+            grid-column: 1;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .main-card, .side-card {
+            padding: 1.25rem;
+        }
+    }
+    </style>
+{% endblock %}

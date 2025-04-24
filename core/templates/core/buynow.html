@@ -1,0 +1,173 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<style>
+    .wrapper {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f5f5f6;
+        font-family: 'Assistant', sans-serif;
+    }
+    
+    .layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+    
+    .order-summary, .address-selection {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        padding: 24px;
+    }
+    
+    .order-summary h3, .address-selection h3 {
+        font-size: 20px;
+        color: #282c3f;
+        margin-bottom: 20px;
+    }
+    
+    .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        color: #282c3f;
+    }
+    
+    .summary-table thead th {
+        text-align: left;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #eaeaec;
+        color: #5d69e3;
+    }
+    
+    .summary-table tbody td {
+        padding: 12px 0;
+        border-bottom: 1px solid #eaeaec;
+    }
+    
+    .summary-table tr td strong {
+        font-weight: 600;
+        color: #4d5ae0;
+    }
+    
+    .address-card {
+        display: block;
+        padding: 16px;
+        margin-bottom: 16px;
+        border: 1px solid #eaeaec;
+        border-radius: 6px;
+        background: #f9f9fb;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+    }
+    
+    .address-card:hover {
+        border-color: #7a84e9;
+    }
+    
+    .address-card input[type="radio"] {
+        margin-top: 6px;
+        accent-color: #635bff;
+    }
+    
+    .address-card strong {
+        color: #282c3f;
+        font-size: 14px;
+    }
+    
+    .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background: #635bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .submit-btn:hover {
+        background: #5d69e3;
+    }
+    
+    @media (max-width: 768px) {
+        .layout {
+            grid-template-columns: 1fr;
+        }
+    
+        .address-card {
+            padding: 12px;
+        }
+    
+        .summary-table td, .summary-table th {
+            font-size: 12px;
+        }
+    }
+    
+
+</style>
+
+<div class="wrapper">
+    <div class="layout">
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3><strong>Order Summary</strong></h3>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>tool Name</th>
+                        <th>tool Price</th>
+                        <th>tool Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ tool.name }}</td>
+                        <td>₹{{ tool.discounted_price }}</td>
+                        <td>1</td>
+                        <td>₹{{ tool.discounted_price }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td><strong>Shipping</strong></td>
+                        <td>₹2000</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td><strong>Total</strong></td>
+                        <td>₹<b>{{ final_price }}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Address Selection -->
+        <div class="address-selection">
+            <h3><strong>Select Address</strong></h3>
+            <form method="post" action="{% url 'buynowpayment' tool.id %}">
+                {% csrf_token %}
+                {% for add in address %}
+                    <label class="address-card">
+                        <input type="radio" name="buynow_selected_address" value="{{ add.id }}" checked>
+                        <strong>Name:</strong> {{ add.name }}<br>
+                        <strong>Address:</strong> {{ add.address }}<br>
+                        <strong>City:</strong> {{ add.city }}<br>
+                        <strong>State:</strong> {{ add.state }}<br>
+                        <strong>Pincode:</strong> {{ add.pincode }}
+                    </label><br>
+                {% endfor %}
+                <input type="submit" class="submit-btn" value="Proceed to Payment">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

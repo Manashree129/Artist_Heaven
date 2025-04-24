@@ -1,0 +1,267 @@
+{% extends "core/base.html" %}
+{% block content %}
+<style>
+    .tool-card {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+    
+    .tool-image {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .tool-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+        transition: transform 0.5s ease;
+    }
+    
+    .tool-image:hover img {
+        transform: scale(1.05);
+    }
+    
+    .tool-info {
+        padding: 1rem;
+    }
+    
+    .tool-name {
+        font-size: 2.25rem;
+        color: #1e293b;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .small-description {
+        color: #64748b;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+    
+    .price-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .discounted-price {
+        font-size: 2rem;
+        color: #E91E63;
+        font-weight: 600;
+    }
+    
+    .original-price {
+        font-size: 1.25rem;
+        color: #94a3b8;
+        text-decoration: line-through;
+    }
+    
+    .discount-text {
+        background: #fce7f3;
+        color: #E91E63;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .btn1 {
+        flex: 1;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        text-decoration: none;
+    }
+    
+    .add-to-cart {
+        background: white;
+        color: #E91E63;
+        border: 2px solid #E91E63;
+    }
+    
+    .add-to-cart:hover {
+        background: rgba(233, 30, 99, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    .buy-now {
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        color: white;
+    }
+    
+    .buy-now:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(233, 30, 99, 0.25);
+    }
+    
+    .notification-container {
+        margin: 1.5rem 0;
+    }
+    
+    .notification-message {
+        display: block;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+    
+    .notification-message.success {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+    
+    .notification-message.error {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+    
+    .description {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .description h2 {
+        color: #1e293b;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .description p {
+        color: #64748b;
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+    
+    @media (max-width: 1024px) {
+        .tool-card {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin: 2rem;
+        }
+    
+        .tool-image {
+            max-height: 500px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .tool-card {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+    
+        .tool-name {
+            font-size: 1.75rem;
+        }
+    
+        .button-group {
+            flex-direction: column;
+        }
+    
+        .btn1 {
+            width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .tool-card {
+            padding: 1rem;
+        }
+    
+        .price-section {
+            flex-wrap: wrap;
+        }
+    
+        .description {
+            margin-top: 2rem;
+        }
+    }
+    </style>
+
+<!-- Rest of your HTML remains the same -->
+    <!-- Product Details Section -->
+
+    <div class="tool-card">
+        <!-- Left Side (Product Image) -->
+        <div class="tool-image">
+            <img src="{{td.tools_image.url}}" alt="Tool Image">
+        </div>
+    
+        <!-- Right Side (Product Details) -->
+        <div class="tool-info">
+            <h1 class="tool-name">{{td.name}}</h1>
+            <p class="small-description">{{td.small_description}}</p>
+            
+            <!-- Pricing Section -->
+            <div class="price-section">
+                <span class="discounted-price">₹{{td.discounted_price}}</span>
+                <span class="original-price">₹{{td.original_price}}</span>
+                <span class="discount-text">(72% off)</span>
+            </div>
+    
+            <!-- Buttons -->
+            <div class="button-group">
+                {% if is_in_cart %}
+                    <a href="{% url 'viewcart' %}" class="btn1 add-to-cart">Go to Cart</a>
+                {% else %}
+                    <form action="{% url 'addtocart' td.id %}" method="POST" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn1 add-to-cart">Add to Cart</button>
+                    </form>
+                {% endif %}
+                
+                <a href="{% url 'buynow' td.id %}" class="btn1 buy-now">Buy Now</a>
+            </div>
+            
+    
+            {% if messages %}
+                <div class="notification-container">
+                    {% for message in messages %}
+                        <span class="notification-message {{ message.tags }}">{{ message }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+    
+            <!-- Description -->
+            <div class="description">
+                <h2>Description</h2>
+                <p>{{td.description}}</p>
+            </div>
+        </div>
+    </div>
+    
+    
+
+
+        
+{% endblock content %}
+
+    
+
+

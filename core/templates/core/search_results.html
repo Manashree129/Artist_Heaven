@@ -1,0 +1,252 @@
+{% extends "core/base.html" %}
+{% block content %}
+<style>
+    .search-results-container {
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .search-header {
+        text-align: center;
+        padding: 2rem 0 3rem;
+    }
+    
+    .search-header h2 {
+        font-size: 2.5rem;
+        color: #1e293b;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .search-underline {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, #E91E63, #9C27B0);
+        margin: 0 auto;
+        border-radius: 3px;
+    }
+    
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+    
+    .product-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .product-image {
+        position: relative;
+        padding-top: 75%;
+        overflow: hidden;
+    }
+    
+    .product-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .hover-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .product-card:hover .hover-overlay {
+        opacity: 1;
+    }
+    
+    .product-card:hover .product-image img {
+        transform: scale(1.05);
+    }
+    
+    .product-info {
+        padding: 1.5rem;
+    }
+    
+    .product-title {
+        font-size: 1.1rem;
+        color: #1e293b;
+        margin-bottom: 0.75rem;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+    
+    .product-description {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+    
+    .price-section {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .original-price {
+        color: #94a3b8;
+        text-decoration: line-through;
+        font-size: 1rem;
+    }
+    
+    .discounted-price {
+        color: #E91E63;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    
+    .view-details-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.875rem;
+        background: linear-gradient(135deg, #E91E63 0%, #9C27B0 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .view-details-btn:hover {
+        box-shadow: 0 8px 25px rgba(233, 30, 99, 0.25);
+        color: white;
+    }
+    
+    .view-details-btn i {
+        transition: transform 0.3s ease;
+    }
+    
+    .view-details-btn:hover i {
+        transform: translateX(5px);
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    
+    .no-results i {
+        font-size: 3rem;
+        color: #E91E63;
+        margin-bottom: 1.5rem;
+    }
+    
+    .no-results h3 {
+        color: #1e293b;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .no-results p {
+        color: #64748b;
+        font-size: 1.1rem;
+    }
+    
+    @media (max-width: 1200px) {
+        .container {
+            max-width: 960px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .search-header h2 {
+            font-size: 2rem;
+        }
+        
+        .container {
+            padding: 0 1rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .search-header h2 {
+            font-size: 1.75rem;
+        }
+        
+        .product-info {
+            padding: 1.25rem;
+        }
+        
+        .no-results {
+            padding: 3rem 1.5rem;
+        }
+    }
+    </style>
+<br>
+<br>
+<div class="search-results-container">
+    <div class="search-header">
+        <h2>Search Results for "{{ query }}"</h2>
+        <div class="search-underline"></div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            {% if stationary %}
+                {% for item in stationary %}
+                    <div class="col-md-4 mb-4">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="{{ item.tools_image.url }}" alt="{{ item.name }}">
+                                <div class="hover-overlay"></div>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">{{ item.name }}</h3>
+                                <p class="product-description">{{ item.small_description|truncatechars:100 }}</p>
+                                <div class="price-section">
+                                    <span class="original-price">₹{{ item.original_price }}</span>
+                                    <span class="discounted-price">₹{{ item.discounted_price }}</span>
+                                </div>
+                                <a href="{% url 'tooldetails' item.id %}" class="view-details-btn">
+                                    View Details
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No Results Found</h3>
+                        <p>We couldn't find any products matching your search "{{ query }}"</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

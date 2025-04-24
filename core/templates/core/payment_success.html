@@ -1,0 +1,96 @@
+{% block css %}
+<style>
+/* Payment Success Section */
+.payment-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.payment-title {
+    font-size: 28px;
+    color: #333;
+}
+
+/* Confirmation Card */
+.confirmation-card {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 20px auto;
+}
+
+.icon-container {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    background: #F8FAF5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.checkmark-icon {
+    font-size: 50px;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.status-heading {
+    font-size: 24px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.order-message {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Button */
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.shop-btn {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.shop-btn:hover {
+    background: #45a049;
+}
+
+</style>
+{% endblock css %}
+
+
+{% block content %}
+
+<div class="payment-section">
+    <h1 class="payment-title">Payment Success</h1>
+</div>
+
+<div class="confirmation-card">
+    <div class="icon-container">
+        <i class="checkmark-icon">✓</i>
+    </div>
+    <h1 class="status-heading">Success</h1>
+    <p class="order-message">We received your order.<br> Thank you for purchasing!</p>
+</div>
+
+<div class="button-container">
+    <a href="{% url "home" %}" class="shop-btn">Continue Shopping</a>
+</div>
+
+{% endblock content %}
