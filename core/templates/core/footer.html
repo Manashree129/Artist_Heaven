@@ -1,14 +1,50 @@
-<footer>
+<footer class="main-footer">
     <div class="footer-container">
-        <div class="footer-content">
-            <h2>Artist's Haven</h2>
-            <ul class="footer-links">
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-            </ul>
+        <!-- Company Info Section -->
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h2>Artist's Haven</h2>
+                <p class="footer-description">Your premier destination for professional art supplies and creative materials.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                    <p><i class="fas fa-envelope"></i> info@artistshaven.com</p>
+                    <p><i class="fas fa-location-dot"></i> 123 Art Street, Creative City</p>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <!-- Customer Service -->
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">Returns Policy</a></li>
+                    <li><a href="#">Track Order</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                </ul>
+            </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p class="copyright">© 2025 Artist's Haven. All rights reserved.</p>
         </div>
-        <p class="copyright">© 2025 Artist's Haven. All rights reserved.</p>
     </div>
 </footer>
